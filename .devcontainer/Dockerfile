@@ -5,6 +5,7 @@ ENV GOINSECURE="GitHub.com,proxy.golang.org" \
 RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99verify-peer
 RUN echo 'check-certificate = off' > ~/.wgetrc
 RUN git config --global http.sslVerify false
+RUN apk --no-cache add ca-certificates
 RUN apt-get update -y && \
     # go-jsonnet
     go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
