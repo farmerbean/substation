@@ -14,7 +14,7 @@ RUN apt-get update -y && \
     # Docker
     curl -kfsSL https://get.docker.com | sh && \
      # go-jsonnet
-     go mod download && \
+     go env -w CGO_ENABLED=0 && \
      go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
      go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
      go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest && \ 
