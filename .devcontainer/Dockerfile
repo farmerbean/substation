@@ -1,7 +1,9 @@
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 ENV GOINSECURE="GitHub.com,proxy.golang.org" \
     GIT_SSL_NO_VERIFY=true
-RUN apt-get -o "Acquire::https::Verify-Peer=false" update -y && \
+
+RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99verify-peer
+RUN apt-get update -y && \
     # Git Config
     git config --global http.sslVerify false && \
     # go-jsonnet
@@ -14,8 +16,8 @@ RUN apt-get -o "Acquire::https::Verify-Peer=false" update -y && \
     # Terraform
     wget --no-check-certificate -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg && \
     echo "deb [allow-insecure=yes signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list && \
-    apt -o "Acquire::https::Verify-Peer=false" update -y && apt -o "Acquire::https::Verify-Peer=false" install -y terraform && \
+    apt update -y && apt install -y terraform && \
     # AWS CLI
-    apt-get -o "Acquire::https::Verify-Peer=false" install -y awscli && \
+    apt-get install -y awscli && \
     # python
-    apt-get -o "Acquire::https::Verify-Peer=false" install -y python3 python3-boto3 black
+    apt-get install -y python3 python3-boto3 black
