@@ -1,5 +1,5 @@
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
-ENV GOINSECURE="GitHub.com,proxy.golang.org" \
+ARG GOINSECURE="GitHub.com,proxy.golang.org" \
     GIT_SSL_NO_VERIFY=true
 RUN apt-get -o "Acquire::https::Verify-Peer=false" update -y && \
     # Docker
