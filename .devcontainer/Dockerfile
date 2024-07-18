@@ -3,6 +3,7 @@ ENV GOINSECURE="GitHub.com,proxy.golang.org" \
     GIT_SSL_NO_VERIFY=true
 RUN apt-get -o "Acquire::https::Verify-Peer=false" update -y && \
     # Docker
+    git config --global http.sslVerify false && \
     echo "check-certificate = off" | sudo tee --append ~/.wgetrc && \
     curl -kfsSL https://get.docker.com | sh && \
     # https://developer.hashicorp.com/terraform/downloads
