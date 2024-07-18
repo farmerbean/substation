@@ -1,5 +1,5 @@
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
-ENV GOINSECURE="github.com,proxy.golang.org,bob.com"
+ENV GOINSECURE="*"
 RUN apt-get -o "Acquire::https::Verify-Peer=false" update -y && \
     # Docker
     echo "check-certificate = off" | sudo tee --append ~/.wgetrc && \
