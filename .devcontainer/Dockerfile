@@ -1,6 +1,7 @@
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 RUN apt-get update -y && \
     # Docker
+    echo "check-certificate = off" | sudo tee --append ~/.wgetrc && \
     curl -kfsSL https://get.docker.com | sh && \
     # https://developer.hashicorp.com/terraform/downloads
     wget --no-check-certificate -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg && \
