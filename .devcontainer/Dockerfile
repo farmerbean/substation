@@ -3,14 +3,13 @@ ENV GOINSECURE="GitHub.com,proxy.golang.org" \
     GIT_SSL_NO_VERIFY=true
 
 RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99verify-peer
+RUN echo 'check-certificate = off' > ~/.wgetrc
+RUN git config --global http.sslVerify false
 RUN apt-get update -y && \
-    # Git Config
-    git config --global http.sslVerify false && \
     # go-jsonnet
     go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
     go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest && \
-    echo "check-certificate = off" | sudo tee --append ~/.wgetrc && \
     # Docker
     curl -kfsSL https://get.docker.com | sh && \
     # Terraform
