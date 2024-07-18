@@ -11,10 +11,6 @@ RUN apk update \
         ca-certificates \
         && update-ca-certificates 2>/dev/null || true
 RUN apt-get update -y && \
-    # go-jsonnet
-    go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
-    go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
-    go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest && \
     # Docker
     curl -kfsSL https://get.docker.com | sh && \
     # Terraform
@@ -24,4 +20,8 @@ RUN apt-get update -y && \
     # AWS CLI
     apt-get install -y awscli && \
     # python
-    apt-get install -y python3 python3-boto3 black
+    apt-get install -y python3 python3-boto3 black && \
+    # go-jsonnet
+    go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
+    go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
+    go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
