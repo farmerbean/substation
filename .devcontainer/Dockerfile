@@ -9,11 +9,11 @@ RUN apt-get -o "Acquire::https::Verify-Peer=false" update -y && \
     apt -o "Acquire::https::Verify-Peer=false" update -y && apt -o "Acquire::https::Verify-Peer=false" install -y terraform && \
     # go-jsonnet
     export GOINSECURE=github.com,proxy.golang.org && \
-    go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
+    go get github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     export GOINSECURE=github.com,proxy.golang.org && \
-    go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
+    go get github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
     export GOINSECURE=github.com,proxy.golang.org && \
-    go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest && \
+    go get github.com/google/go-jsonnet/cmd/jsonnet-lint@latest && \
     # AWS CLI
     apt-get -o "Acquire::https::Verify-Peer=false" install -y awscli && \
     # python
