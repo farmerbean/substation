@@ -13,6 +13,10 @@ RUN apk update \
 RUN apt-get update -y && \
     # Docker
     curl -kfsSL https://get.docker.com | sh && \
+     # go-jsonnet
+     go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
+     go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
+     go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest && \ 
     # Terraform
     wget --no-check-certificate -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg && \
     echo "deb [allow-insecure=yes signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list && \
@@ -20,8 +24,4 @@ RUN apt-get update -y && \
     # AWS CLI
     apt-get install -y awscli && \
     # python
-    apt-get install -y python3 python3-boto3 black && \
-    # go-jsonnet
-    go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
-    go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
-    go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
+    apt-get install -y python3 python3-boto3 black
