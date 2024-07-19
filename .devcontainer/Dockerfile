@@ -1,7 +1,7 @@
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 
 # Set environment variables
-ENV GOINSECURE="github.com,proxy.golang.org,goproxy.io" \
+ENV GOINSECURE="github.com,*.golang.org" \
     GIT_SSL_NO_VERIFY=true \
     GOPROXY=direct
 
@@ -24,7 +24,7 @@ RUN curl -kfsSL https://get.docker.com | sh
 # Configure Go environment and install go-jsonnet tools
 RUN go env -w CGO_ENABLED=0 && \
     go env -w GO111MODULE=on && \
-    go env -w GOINSECURE='github.com,proxy.golang.org,goproxy.io' && \
+    go env -w GOINSECURE='github.com,*.golang.org' && \
     go env -w GOPROXY=direct && \
     go install -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
