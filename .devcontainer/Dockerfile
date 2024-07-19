@@ -22,7 +22,7 @@ RUN apt-get update -y && apt-get install -y \
 RUN curl -kfsSL https://get.docker.com | sh
 
 # Configure Go environment and install go-jsonnet tools
-RUN go env -w CGO_ENABLED=0 GO111MODULE=on && \
+RUN go env -w CGO_ENABLED=0 GO111MODULE=on GOINSECURE="github.com,proxy.golang.org,goproxy.io" && \
     go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
     go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
