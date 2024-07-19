@@ -26,6 +26,7 @@ RUN go env -w CGO_ENABLED=0 && \
     go env -w GO111MODULE=on && \
     go env -w GOINSECURE='github.com,*.golang.org' && \
     go env -w GOPROXY=direct && \
+    git config --global http.sslVerify false && \
     go install -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
     go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
