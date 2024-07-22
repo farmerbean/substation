@@ -1,7 +1,7 @@
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 
 # Set environment variables
-ENV GOINSECURE="github.com,*.golang.orgm,sigs.k8s.io" \
+ENV GOINSECURE="github.com,*.golang.org,sigs.k8s.io" \
     GIT_SSL_NO_VERIFY=true \
     GONOSUMDB="github.com/google/go-jsonnet/*,github.com/fatih/*" \
     GOPROXY=direct
