@@ -27,7 +27,7 @@ RUN --mount=type=secret,id=ca-certs \
     go env -w GOINSECURE='github.com,*.golang.org,sigs.k8s.io,golang.org,gopkg.in' && \
     go env -w GOPROXY=direct && \
     go env -w GONOSUMDB='github.com/google/go-jsonnet/*,github.com/fatih/*,github.com/mattn/go-isatty/*' && \
-#    go env -w GOSUMDB=off && \
+    go env -w GOSUMDB=off && \
     go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
     go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
