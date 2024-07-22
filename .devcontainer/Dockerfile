@@ -29,11 +29,6 @@ RUN curl -kfsSL https://get.docker.com | sh
 # Use Docker build secrets to mount CA certificates
 RUN --mount=type=secret,id=ca-certs \
     SSL_CERT_FILE=/run/secrets/cer_rootCA.cer \
-    git config --global http.sslVerify false && \
-    go env -w CGO_ENABLED=0 && \
-    go env -w GO111MODULE=on && \
-    go env -w GOINSECURE='github.com,*.golang.org,golang.org,sigs.k8s.io' && \
-    go env -w GOPROXY=direct && \
     go env -w GONOSUMDB='github.com/google/go-jsonnet/*,github.com/fatih/*,github.com/mattn/go-isatty/*' && \
     go env -w GOSUMDB=off && \
     GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
