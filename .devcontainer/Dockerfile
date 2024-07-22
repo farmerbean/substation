@@ -29,7 +29,7 @@ RUN export CGO_ENABLED=0 && \
     export GOPROXY=direct && \
     export GONOSUMDB='github.com/google/go-jsonnet/*,github.com/fatih/*' && \
     git config --global http.sslVerify false && \
-    go install -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
+    go install -insecure -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
     go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
 
