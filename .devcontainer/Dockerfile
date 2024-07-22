@@ -3,6 +3,9 @@ FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 # Set environment variables globally
 ENV GIT_SSL_NO_VERIFY=true
 
+# Random ARG
+ARG datetime=true
+
 # Disable SSL verification globally for APT, wget, git
 RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99verify-peer && \
     echo 'check-certificate = off' > ~/.wgetrc && \
