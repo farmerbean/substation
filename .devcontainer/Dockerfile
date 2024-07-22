@@ -1,9 +1,9 @@
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 
 # Set environment variables globally
-ENV GOINSECURE="github.com,*.golang.org,sigs.k8s.io" \
+ENV GOINSECURE="github.com,*.golang.org,sigs.k8s.io,gopkg.in" \
     GIT_SSL_NO_VERIFY=true \
-    GONOSUMDB="github.com/google/go-jsonnet/*,github.com/fatih/*" \
+    GONOSUMDB="github.com/google/go-jsonnet/*,github.com/fatih/*,github.com/mattn/go-isatty/*" \
     GOPROXY=direct \
     GOSUMDB=off \
     CGO_ENABLED=0 \
@@ -32,9 +32,9 @@ RUN --mount=type=secret,id=ca-certs \
     git config --global http.sslVerify false && \
     go env -w CGO_ENABLED=0 && \
     go env -w GO111MODULE=on && \
-    go env -w GOINSECURE='github.com,*.golang.org,sigs.k8s.io' && \
+    go env -w GOINSECURE='github.com,*.golang.org,sigs.k8s.io,gopkg.in' && \
     go env -w GOPROXY=direct && \
-    go env -w GONOSUMDB='github.com/google/go-jsonnet/*,github.com/fatih/*' && \
+    go env -w GONOSUMDB='github.com/google/go-jsonnet/*,github.com/fatih/*,github.com/mattn/go-isatty/*' && \
     go env -w GOSUMDB=off && \
     GIT_SSL_NO_VERIFY=true SSL_CERT_DIR=/run/secrets go install -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     GIT_SSL_NO_VERIFY=true SSL_CERT_DIR=/run/secrets go install -x github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
