@@ -3,8 +3,11 @@ FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 # Set environment variables globally
 ENV GOINSECURE="github.com,*.golang.org,sigs.k8s.io,golang.org,gopkg.in" \
     GIT_SSL_NO_VERIFY=true \
+    GONOSUMDB="github.com/google/go-jsonnet/*,github.com/fatih/*,github.com/mattn/go-isatty/*" \
     GOPROXY=direct \
-    GOSUMDB=off
+    GOSUMDB=off \
+    CGO_ENABLED=0 \
+    GO111MODULE=on
 
 # Disable SSL verification globally for APT, wget, git
 RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99verify-peer && \
@@ -23,14 +26,14 @@ RUN apt-get update -y && apt-get install -y \
 RUN curl -kfsSL https://get.docker.com | sh
 
 # Configure Go environment and install go-jsonnet tools
-# Use Docker build secrets to mount CA certificates JO
+# Use Docker build secrets to mount CA certificates
 RUN --mount=type=secret,id=ca-certs \
     SSL_CERT_FILE=/run/secrets/cer_rootCA.cer \
-    GIT_SSL_NO_VERIFY=true \
+    go env -w GONOSUMDB='github.com/google/go-jsonnet/*,github.com/fatih/*,github.com/mattn/go-isatty/*' && \
     go env -w GOSUMDB=off && \
-    go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
-    go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
-    go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
+    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
+    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
+    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
 
 # Add HashiCorp's repository and install Terraform
 RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg && \
