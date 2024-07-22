@@ -20,11 +20,11 @@ RUN apt-get update -y && apt-get install -y \
 RUN curl -kfsSL https://get.docker.com | sh
 
 # Configure Go environment and install go-jsonnet tools
-# Use Docker build secrets to mount CA certificates ARH
+# Use Docker build secrets to mount CA certificates ARjio
 RUN --mount=type=secret,id=ca-certs \
     SSL_CERT_FILE=/run/secrets/cer_rootCA.cer \
     GIT_SSL_NO_VERIFY=true \
-    go env -w GOINSECURE='github.com,*.golang.org,sigs.k8s.io,golang.org,gopkg.in' && \
+    # go env -w GOINSECURE='github.com,*.golang.org,sigs.k8s.io,golang.org,gopkg.in' && \
     go env -w GOPROXY=direct && \
     go env -w GONOSUMDB='github.com/google/go-jsonnet/*,github.com/fatih/*,github.com/mattn/go-isatty/*' && \
     go env -w GOSUMDB=off && \
