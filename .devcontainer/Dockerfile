@@ -25,10 +25,11 @@ RUN curl -kfsSL https://get.docker.com | sh
 # Use Docker build secrets to mount CA certificates
 RUN --mount=type=secret,id=ca-certs \
     SSL_CERT_FILE=/run/secrets/cer_rootCA.cer \
+    GIT_SSL_NO_VERIFY=true \
     go env -w GOSUMDB=off && \
-    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
-    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
-    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
+    go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
+    go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
+    go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
 
 # Add HashiCorp's repository and install Terraform
 RUN wget --no-check-certificate -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg && \
