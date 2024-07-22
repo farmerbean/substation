@@ -1,7 +1,13 @@
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 
 # Set environment variables globally
-ENV GIT_SSL_NO_VERIFY=true
+ENV GOINSECURE="github.com,*.golang.org,sigs.k8s.io,golang.org,gopkg.in" \
+    GIT_SSL_NO_VERIFY=true \
+    GONOSUMDB="github.com/google/go-jsonnet/*,github.com/fatih/*,github.com/mattn/go-isatty/*" \
+    GOPROXY=direct \
+    GOSUMDB=off \
+    CGO_ENABLED=0 \
+    GO111MODULE=on
 
 # Disable SSL verification globally for APT, wget, git
 RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99verify-peer && \
