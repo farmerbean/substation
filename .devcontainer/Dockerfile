@@ -1,10 +1,13 @@
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 
-# Set environment variables
+# Set environment variables globally
 ENV GOINSECURE="github.com,*.golang.org,sigs.k8s.io" \
     GIT_SSL_NO_VERIFY=true \
     GONOSUMDB="github.com/google/go-jsonnet/*,github.com/fatih/*" \
-    GOPROXY=direct
+    GOPROXY=direct \
+    GOSUMDB=off \
+    CGO_ENABLED=0 \
+    GO111MODULE=on
 
 # Disable SSL verification globally for APT, wget, git
 RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99verify-peer && \
@@ -23,13 +26,13 @@ RUN apt-get update -y && apt-get install -y \
 RUN curl -kfsSL https://get.docker.com | sh
 
 # Configure Go environment and install go-jsonnet tools
-RUN go env -w CGO_ENABLED=0 && \
+RUN git config --global http.sslVerify false && \
+    go env -w CGO_ENABLED=0 && \
     go env -w GO111MODULE=on && \
     go env -w GOINSECURE='github.com,*.golang.org,sigs.k8s.io' && \
     go env -w GOPROXY=direct && \
     go env -w GONOSUMDB='github.com/google/go-jsonnet/*,github.com/fatih/*' && \
-    git config --global http.sslVerify false && \
-    GIT_SSL_NO_VERIFY=true go env -w GOSUMDB=off && \
+    go env -w GOSUMDB=off && \
     GIT_SSL_NO_VERIFY=true go install -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     GIT_SSL_NO_VERIFY=true go install -x github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
     GIT_SSL_NO_VERIFY=true go install -x github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
