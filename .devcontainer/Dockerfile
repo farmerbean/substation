@@ -3,9 +3,6 @@ FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 # Set environment variables globally
 ENV GIT_SSL_NO_VERIFY=true
 
-# Random NOCACHE ARG
-ARG NOCACHE
-
 # Disable SSL verification globally for APT, wget, git
 RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99verify-peer && \
     echo 'check-certificate = off' > ~/.wgetrc && \
@@ -21,6 +18,9 @@ RUN apt-get update -y && apt-get install -y \
 
 # Install Docker
 RUN curl -kfsSL https://get.docker.com | sh
+
+# Random NOCACHE ARG
+ARG NOCACHE
 
 # Configure Go environment and install go-jsonnet tools
 # Use Docker build secrets to mount CA certificates ARafa
