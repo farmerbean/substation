@@ -1,13 +1,9 @@
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 
 # Set environment variables globally
-ENV GOINSECURE="github.com,*.golang.org,sigs.k8s.io,golang.org,gopkg.in" \
-    GIT_SSL_NO_VERIFY=true \
-    GONOSUMDB="github.com/google/go-jsonnet/*,github.com/fatih/*,github.com/mattn/go-isatty/*" \
+ENV GIT_SSL_NO_VERIFY=true \
     GOPROXY=direct \
-    GOSUMDB=off \
-    CGO_ENABLED=0 \
-    GO111MODULE=on
+    GOSUMDB=off
 
 # Disable SSL verification globally for APT, wget, git
 RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99verify-peer && \
@@ -29,7 +25,6 @@ RUN curl -kfsSL https://get.docker.com | sh
 # Use Docker build secrets to mount CA certificates
 RUN --mount=type=secret,id=ca-certs \
     SSL_CERT_FILE=/run/secrets/cer_rootCA.cer \
-    go env -w GONOSUMDB='github.com/google/go-jsonnet/*,github.com/fatih/*,github.com/mattn/go-isatty/*' && \
     go env -w GOSUMDB=off && \
     GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
