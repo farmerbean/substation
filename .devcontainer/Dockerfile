@@ -29,9 +29,10 @@ RUN go env -w CGO_ENABLED=0 && \
     go env -w GOPROXY=direct && \
     go env -w GONOSUMDB='github.com/google/go-jsonnet/*,github.com/fatih/*' && \
     git config --global http.sslVerify false && \
+    GIT_SSL_NO_VERIFY=true go env -w GOSUMDB=off && \
     GIT_SSL_NO_VERIFY=true go install -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
-    GIT_SSL_NO_VERIFY=true go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
-    GIT_SSL_NO_VERIFY=true go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
+    GIT_SSL_NO_VERIFY=true go install -x github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
+    GIT_SSL_NO_VERIFY=true go install -x github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
 
 # Add HashiCorp's repository and install Terraform
 RUN wget --no-check-certificate -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg && \
