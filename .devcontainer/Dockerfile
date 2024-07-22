@@ -1,13 +1,8 @@
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 
 # Set environment variables globally
-ENV GOINSECURE="github.com,*.golang.org,sigs.k8s.io,golang.org,gopkg.in" \
-    GIT_SSL_NO_VERIFY=true \
-    GONOSUMDB="github.com/google/go-jsonnet/*,github.com/fatih/*,github.com/mattn/go-isatty/*" \
-    GOPROXY=direct \
-    GOSUMDB=off \
-    CGO_ENABLED=0 \
-    GO111MODULE=on
+ENV GIT_SSL_NO_VERIFY=true \
+    GOPROXY=direct
 
 # Disable SSL verification globally for APT, wget, git
 RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99verify-peer && \
@@ -29,12 +24,12 @@ RUN curl -kfsSL https://get.docker.com | sh
 # Use Docker build secrets to mount CA certificates
 RUN --mount=type=secret,id=ca-certs \
     SSL_CERT_FILE=/run/secrets/cer_rootCA.cer \
-    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnet@latest && \
-    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
-    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install -x github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
+    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
+    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install github.com/google/go-jsonnet/cmd/jsonnetfmt@latest && \
+    GIT_SSL_NO_VERIFY=true SSL_CERT_FILE=/run/secrets/cer_rootCA.cer go install github.com/google/go-jsonnet/cmd/jsonnet-lint@latest
 
 # Add HashiCorp's repository and install Terraform
-RUN wget --no-check-certificate -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg && \
+RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg && \
     echo "deb [allow-insecure=yes signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list && \
     apt-get update -y && apt-get install -y terraform
 
