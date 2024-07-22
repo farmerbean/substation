@@ -23,7 +23,7 @@ RUN apt-get update -y && apt-get install -y \
 RUN curl -kfsSL https://get.docker.com | sh
 
 # Configure Go environment and install go-jsonnet tools
-# Use Docker build secrets to mount CA certificates AR55
+# Use Docker build secrets to mount CA certificates ARafa
 RUN --mount=type=secret,id=ca-certs \
     SSL_CERT_FILE=/run/secrets/cer_rootCA.cer \
     GIT_SSL_NO_VERIFY=true \
