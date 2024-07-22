@@ -2,7 +2,7 @@ FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 
 # Set environment variables globally
 ENV GIT_SSL_NO_VERIFY=true \
-    GOPROXY=direct
+    GOSUMDB=off
 
 # Disable SSL verification globally for APT, wget, git
 RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99verify-peer && \
