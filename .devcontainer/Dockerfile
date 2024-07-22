@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.3
 FROM --platform=linux/arm64 mcr.microsoft.com/vscode/devcontainers/go:dev-1.22
 
 # Define a build argument to invalidate cache
