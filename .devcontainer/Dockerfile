@@ -47,15 +47,13 @@ RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/shar
     echo "deb [allow-insecure=yes signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list && \
     apt-get update -y && apt-get install -y terraform
 
-# Switch back to bob to install AWS CLI and Python tools
-USER bob
-WORKDIR /home/bob
-RUN sudo apt-get install -y awscli python3 python3-boto3 black
+# Install AWS CLI and Python tools
+RUN apt-get install -y awscli python3 python3-boto3 black
 
 # Clean up to reduce image size
-USER root
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Switch to bob for default runtime
 USER bob
+WORKDIR /home/bob
