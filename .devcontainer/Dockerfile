@@ -20,6 +20,7 @@ RUN apt-get update -y && apt-get install -y \
     && update-ca-certificates 2>/dev/null || true
 
 # Install Docker
+USER root
 RUN curl -kfsSL https://get.docker.com | sh
 
 # Create a non-root user named bob and switch to that user
