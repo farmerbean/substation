@@ -49,7 +49,8 @@ RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/shar
 
 # Switch back to bob to install AWS CLI and Python tools
 USER bob
-RUN apt-get install -y awscli python3 python3-boto3 black
+WORKDIR /home/bob
+RUN sudo apt-get install -y awscli python3 python3-boto3 black
 
 # Clean up to reduce image size
 USER root
