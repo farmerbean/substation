@@ -123,6 +123,15 @@
         type: 'meta_condition',
         settings: std.prune(std.mergePatch(default, $.helpers.abbv(settings))),
       },
+      err(settings={}): {
+        local default = {
+          inspector: null,
+          error_messages: null,
+        },
+
+        type: 'meta_err',
+        settings: std.prune(std.mergePatch(default, $.helpers.abbv(settings))),
+      },
       for_each(settings={}): {
         local default = {
           object: $.config.object,
@@ -591,6 +600,7 @@
         local default = {
           id: $.helpers.id(type, settings),
           transform: null,
+          transforms: null,
           error_messages: null,
         },
 
@@ -603,6 +613,7 @@
           id: $.helpers.id(type, settings),
           object: $.config.object,
           transform: null,
+          transforms: null,
         },
 
         type: type,
@@ -615,6 +626,7 @@
             id: $.helpers.id(type, settings),
             object: $.config.object { ttl_key: null },
             transform: null,
+            transforms: null,
             kv_store: null,
             prefix: null,
             ttl_offset: '0s',
@@ -631,6 +643,7 @@
             id: $.helpers.id(type, settings),
             metric: $.config.metric,
             transform: null,
+            transforms: null,
           },
 
           type: type,
@@ -1378,10 +1391,11 @@
       // the condition does not contain a valid operator, then it is assumed
       // to be an ANY operator.
       conditional(condition, transform): {
+        local type = 'meta_switch',
         local c = if std.objectHas(condition, 'type') then { operator: 'any', inspectors: [condition] } else condition,
 
-        type: 'meta_switch',
-        settings: { cases: [{ condition: c, transform: transform }] },
+        type: type,
+        settings: { id: $.helpers.id(type, transform), cases: [{ condition: c, transform: transform }] },
       },
       fmt: $.pattern.transform.format,
       format: {
